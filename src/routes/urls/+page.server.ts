@@ -1,8 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { addUrl, getUrls } from '$lib/server/urls';
-import { fetchContent } from '$lib/server/fetch-content';
-import { summarize } from '$lib/server/anthropic';
+import { summarizeUrl } from '$lib/server/summarizeUrl';
 
 export const load: PageServerLoad = () => {
 	return { urls: getUrls() };
@@ -33,13 +32,12 @@ export const actions: Actions = {
 			return fail(400, { error: 'Add some URLs first.' });
 		}
 
-		const results: Array<{ url: string; bullets?: string[]; error?: string }> = [];
+		const results: Array<{ url: string; summary?: string; error?: string }> = [];
 
 		for (const url of urls) {
 			try {
-				const content = await fetchContent(url);
-				const bullets = await summarize(content);
-				results.push({ url, bullets });
+				const summary = await summarizeUrl(url);
+				results.push({ url, summary });
 			} catch (err) {
 				results.push({
 					url,

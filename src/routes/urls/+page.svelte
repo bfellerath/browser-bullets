@@ -38,12 +38,8 @@
 			{#each form.results as result}
 				<div class="result">
 					<h3><a href={result.url} target="_blank" rel="noopener">{result.url}</a></h3>
-					{#if result.bullets}
-						<ul>
-							{#each result.bullets as bullet}
-								<li>{bullet}</li>
-							{/each}
-						</ul>
+					{#if result.summary}
+						<p class="summary">{result.summary}</p>
 					{:else if result.error}
 						<p class="error">{result.error}</p>
 					{/if}
@@ -154,13 +150,8 @@
 		text-decoration: underline;
 	}
 
-	.result ul {
-		padding-left: 1.25rem;
-		margin: 0;
-	}
-
-	.result li {
-		margin-bottom: 0.4rem;
-		line-height: 1.5;
+	.summary {
+		line-height: 1.6;
+		white-space: pre-line;
 	}
 </style>
