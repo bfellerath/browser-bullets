@@ -2,7 +2,6 @@
 	import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();
-	let mode = $state<'url' | 'text'>('url');
 </script>
 
 <svelte:head>
@@ -10,30 +9,13 @@
 </svelte:head>
 
 <main>
-	<h1>⚡ Browser Bullets</h1>
-	<p>Get 3-bullet summaries of any article, powered by Claude.</p>
-
-	<div class="tabs">
-		<button class:active={mode === 'url'} onclick={() => (mode = 'url')}>By URL</button>
-		<button class:active={mode === 'text'} onclick={() => (mode = 'text')}>Paste Text</button>
-	</div>
+	<h1>Browser Bullets</h1>
+	<p>Paste an article below to get 3 concise bullet-point summaries powered by Claude.</p>
 
 	<form method="POST">
-		{#if mode === 'url'}
-			<input type="hidden" name="mode" value="url" />
-			<input
-				type="url"
-				name="url"
-				placeholder="https://example.com/article"
-				value={form?.url ?? ''}
-				required
-			/>
-		{:else}
-			<input type="hidden" name="mode" value="text" />
-			<textarea name="text" rows="10" placeholder="Paste article text here..." required
-				>{form?.text ?? ''}</textarea
-			>
-		{/if}
+		<textarea name="text" rows="10" placeholder="Paste article text here..." required
+			>{form?.text ?? ''}</textarea
+		>
 		<button type="submit">Summarize</button>
 	</form>
 
@@ -75,26 +57,6 @@
 		color: #a0a0b0;
 	}
 
-	.tabs {
-		display: flex;
-		gap: 8px;
-		margin-bottom: 1rem;
-	}
-
-	.tabs button {
-		margin-top: 0;
-		background: #16162a;
-		color: #a0a0b0;
-		border: 1px solid #333;
-	}
-
-	.tabs button.active {
-		background: #7c3aed;
-		color: white;
-		border-color: #7c3aed;
-	}
-
-	input[type='url'],
 	textarea {
 		width: 100%;
 		padding: 0.75rem;
@@ -104,11 +66,8 @@
 		color: #e0e0e0;
 		font-family: inherit;
 		font-size: 14px;
-		box-sizing: border-box;
-	}
-
-	textarea {
 		resize: vertical;
+		box-sizing: border-box;
 	}
 
 	button {
