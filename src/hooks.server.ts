@@ -16,6 +16,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (event.url.pathname.startsWith('/api/')) {
 		response.headers.set('Access-Control-Allow-Origin', '*');
+	} else {
+		// Cross-origin isolation required for SharedArrayBuffer (used by kokoro-js WASM)
+		response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+		response.headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
 	}
 
 	return response;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ActionData } from './$types';
+	import TTSButton from '$lib/components/TTSButton.svelte';
 
 	let { form }: { form: ActionData } = $props();
 </script>
@@ -30,6 +31,7 @@
 					<li>{bullet}</li>
 				{/each}
 			</ul>
+			<TTSButton text={form.bullets.join(' ')} />
 		</div>
 	{/if}
 </main>
