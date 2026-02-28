@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ActionData, PageData } from './$types';
+	import TTSButton from '$lib/components/TTSButton.svelte';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 </script>
@@ -33,13 +34,23 @@
 	{/if}
 
 	{#if form?.results}
+		{@const allText = form.results
+			.filter((r) => r.summary)
+			.map((r) => r.summary)
+			.join(' ')}
 		<div class="briefing">
-			<h2>Briefing</h2>
+			<div class="briefing-header">
+				<h2>Briefing</h2>
+				{#if allText}
+					<TTSButton text={allText} />
+				{/if}
+			</div>
 			{#each form.results as result}
 				<div class="result">
 					<h3><a href={result.url} target="_blank" rel="noopener">{result.url}</a></h3>
 					{#if result.summary}
 						<p class="summary">{result.summary}</p>
+						<TTSButton text={result.summary} />
 					{:else if result.error}
 						<p class="error">{result.error}</p>
 					{/if}
@@ -127,9 +138,16 @@
 		padding-top: 1.5rem;
 	}
 
-	.briefing h2 {
+	.briefing-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.briefing-header h2 {
 		color: #a78bfa;
-		margin-top: 0;
+		margin: 0;
 	}
 
 	.result {
