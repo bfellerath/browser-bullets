@@ -1,20 +1,20 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { summarize } from '$lib/server/anthropic';
+import { summarizeUrl } from '$lib/server/summarizeUrl';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const body = await request.json();
-	const { text } = body;
+	const { url } = body;
 
-	if (!text || typeof text !== 'string' || text.trim().length === 0) {
-		error(400, 'Missing or empty "text" field.');
+	if (!url || typeof url !== 'string') {
+		error(400, 'Missing "url" field.');
 	}
 
 	try {
-		const bullets = await summarize(text);
+		const bullets = await summarizeUrl(url);
 		return json({ bullets });
 	} catch (err) {
-		console.error('Claude API error:', err instanceof Error ? err.message : err);
-		error(502, 'Failed to summarize article.');
+		console.error('Summarize error:', err instanceof Error ? err.message : err);
+		error(502, err instanceof Error ? err.message : 'Failed to summarize.');
 	}
 };
