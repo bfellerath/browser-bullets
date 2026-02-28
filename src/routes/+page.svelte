@@ -9,7 +9,6 @@
 </svelte:head>
 
 <main>
-	<h1>Browser Bullets</h1>
 	<p>Paste an article below to get 3 concise bullet-point summaries powered by Claude.</p>
 
 	<form method="POST">
@@ -36,21 +35,11 @@
 </main>
 
 <style>
-	:global(body) {
-		margin: 0;
-		background: #1a1a2e;
-	}
-
 	main {
 		max-width: 640px;
 		margin: 0 auto;
 		padding: 2rem 1rem;
-		font-family: system-ui, sans-serif;
 		color: #e0e0e0;
-	}
-
-	h1 {
-		color: #a78bfa;
 	}
 
 	p {
