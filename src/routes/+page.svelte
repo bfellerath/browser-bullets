@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Browser Bullets</title>
+	<title>Rag Briefing</title>
 </svelte:head>
 
 <main>

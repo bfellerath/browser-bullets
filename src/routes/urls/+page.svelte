@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>URLs - Browser Bullets</title>
+	<title>URLs - Rag Briefing</title>
 </svelte:head>
 
 <main>
