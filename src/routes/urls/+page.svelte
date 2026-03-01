@@ -39,7 +39,17 @@
 				<div class="result">
 					<h3><a href={result.url} target="_blank" rel="noopener">{result.url}</a></h3>
 					{#if result.summary}
-						<p class="summary">{result.summary}</p>
+						<ul class="summary">
+							{#each result.summary.split('\n\n') as bullet}
+								<li>
+									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+										<circle cx="8" cy="8" r="7" stroke="#a78bfa" stroke-width="1.5"/>
+										<circle cx="8" cy="8" r="3" fill="#a78bfa"/>
+									</svg>
+									<span>{bullet}</span>
+								</li>
+							{/each}
+						</ul>
 					{:else if result.error}
 						<p class="error">{result.error}</p>
 					{/if}
@@ -151,7 +161,23 @@
 	}
 
 	.summary {
-		line-height: 1.6;
-		white-space: pre-line;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.summary li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		line-height: 1.5;
+	}
+
+	.summary li svg {
+		flex-shrink: 0;
+		margin-top: 2px;
 	}
 </style>
