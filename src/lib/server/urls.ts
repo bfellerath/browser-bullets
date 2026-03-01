@@ -1,13 +1,16 @@
-const urls: string[] = [];
+const KEY = 'urls';
 
-export function addUrl(url: string): void {
+export async function addUrl(kv: KVNamespace, url: string): Promise<void> {
+	const urls = await getUrls(kv);
 	urls.push(url);
+	await kv.put(KEY, JSON.stringify(urls));
 }
 
-export function getUrls(): string[] {
-	return urls;
+export async function getUrls(kv: KVNamespace): Promise<string[]> {
+	const data = await kv.get(KEY);
+	return data ? JSON.parse(data) : [];
 }
 
-export function clearUrls(): void {
-	urls.length = 0;
+export async function clearUrls(kv: KVNamespace): Promise<void> {
+	await kv.delete(KEY);
 }

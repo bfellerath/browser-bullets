@@ -3,12 +3,14 @@ import { fail } from '@sveltejs/kit';
 import { addUrl, getUrls, clearUrls } from '$lib/server/urls';
 import { summarizeUrl } from '$lib/server/summarizeUrl';
 
-export const load: PageServerLoad = () => {
-	return { urls: getUrls() };
+export const load: PageServerLoad = async ({ platform }) => {
+	const kv = platform!.env.URLS_KV;
+	return { urls: await getUrls(kv) };
 };
 
 export const actions: Actions = {
-	add: async ({ request }) => {
+	add: async ({ request, platform }) => {
+		const kv = platform!.env.URLS_KV;
 		const formData = await request.formData();
 		const url = formData.get('url');
 
@@ -22,11 +24,12 @@ export const actions: Actions = {
 			return fail(400, { error: 'Please enter a valid URL.' });
 		}
 
-		addUrl(url.trim());
+		await addUrl(kv, url.trim());
 	},
 
-	generate: async () => {
-		const urls = getUrls();
+	generate: async ({ platform }) => {
+		const kv = platform!.env.URLS_KV;
+		const urls = await getUrls(kv);
 
 		if (urls.length === 0) {
 			return fail(400, { error: 'Add some URLs first.' });
@@ -49,7 +52,8 @@ export const actions: Actions = {
 		return { results };
 	},
 
-	clear: async () => {
-		clearUrls();
+	clear: async ({ platform }) => {
+		const kv = platform!.env.URLS_KV;
+		await clearUrls(kv);
 	}
 };
